@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Web.Mvc;
 using SimpleCQRS;
+using SimpleCQRS.Commands;
 
 namespace CQRSGui.Controllers
 {
@@ -8,7 +9,7 @@ namespace CQRSGui.Controllers
     public class HomeController : Controller
     {
         private FakeBus _bus;
-        private ReadModelFacade _readmodel;
+        private IReadModelFacade _readmodel;
 
         public HomeController()
         {
