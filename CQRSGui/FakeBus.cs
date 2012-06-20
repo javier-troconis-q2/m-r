@@ -5,9 +5,16 @@ using SimpleCQRS.Events;
 
 namespace CQRSGui
 {
-    public class FakeBus : IEventPublisher, ICommandSender
+    public interface IEventPublisher<in TEvent>
+    {
+        void Publish(TEvent @event, EventMetadata metadata);
+    }
+
+
+    public class FakeBus<TEvent> : IEventPublisher<TEvent>, ICommandSender
     {
         readonly Dictionary<Type, List<dynamic>> handlers = new Dictionary<Type, List<dynamic>>(); 
+        readonly Dictionary<Type, List<dynamic>> metadataHandlers = new Dictionary<Type, List<dynamic>>(); 
 
         public void RegisterHandler<T>(Action<T> handler)
         {
@@ -20,12 +27,27 @@ namespace CQRSGui
             list.Add(handler);
         }
 
-        public void Publish(object @event)
+        public void RegisterHandler<T>(Action<T, EventMetadata> handler)
         {
             List<dynamic> list;
-            if (handlers.TryGetValue(@event.GetType(), out list))
+            if (!metadataHandlers.TryGetValue(typeof(T), out list))
+            {
+                list = new List<dynamic>();
+                metadataHandlers.Add(typeof(T), list);
+            }
+            list.Add(handler);
+        }
+
+        public void Publish(TEvent @event, EventMetadata metadata)
+        {
+            List<dynamic> list;
+            Type type = @event.GetType();
+            if (handlers.TryGetValue(type, out list))
                 foreach (var handler in list)
                     handler((dynamic)@event);
+            if (metadataHandlers.TryGetValue(type, out list))
+                foreach (var handler in list)
+                    handler((dynamic)@event, metadata);
         }
 
         public void Send(object command)

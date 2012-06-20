@@ -3,13 +3,16 @@ open System
 
 type Event = obj
 
-type IEventPublisher =
-    abstract member Publish : Event -> unit
+type EventMetadata =
+    {
+        Version : int
+    }
 
 type InventoryItemDeactivated =
     {
         Id: Guid
     }
+    
 
 type InventoryItemCreated =
     {

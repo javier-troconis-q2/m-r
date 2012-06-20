@@ -3,6 +3,7 @@ open System
 open SimpleCQRS.Events
 
 module InventoryItem =
+   
     type State = 
         {
             Id: Guid
@@ -18,11 +19,11 @@ module InventoryItem =
 
     let remove count s =
         if count <= 0 then raise (InvalidOperationException "cant remove negative count from inventory")
-        fire {ItemsRemovedFromInventory.Id = s.Id; Count = count } 
+        fire {ItemsRemovedFromInventory.Id = s.Id; Count = count} 
 
     let checkIn count s =
         if count <= 0 then raise (InvalidOperationException "must have a count greater than 0 to add to inventory")
-        fire {ItemsCheckedInToInventory.Id= s.Id; Count = count } 
+        fire {ItemsCheckedInToInventory.Id= s.Id; Count = count} 
     
     let deactivate s =
         if not s.Activated then raise (InvalidOperationException "already deactivated")
@@ -37,6 +38,6 @@ module InventoryItem =
         | :? InventoryItemDeactivated as e -> {s with Activated = false; }
         | _ -> s
 
-    let load application =
+    let replayWith application =
         let empty = { Id = Guid.Empty; Activated = false} 
         Seq.fold application empty

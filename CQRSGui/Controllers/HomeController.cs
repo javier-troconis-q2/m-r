@@ -8,13 +8,13 @@ namespace CQRSGui.Controllers
     [HandleError]
     public class HomeController : Controller
     {
-        private FakeBus _bus;
+        private FakeBus<object> _bus;
         private IReadModelFacade _readmodel;
 
         public HomeController()
         {
             _bus = ServiceLocator.Bus;
-            _readmodel = new ReadModelFacade();
+            _readmodel = new ReadModelFacade(MvcApplication.Database);
         }
 
         public ActionResult Index()

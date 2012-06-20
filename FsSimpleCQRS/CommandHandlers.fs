@@ -4,12 +4,13 @@ open SimpleCQRS.Events
 open InventoryItem
 
 
-type InventoryCommandHandlers (eventStore: EventStore) =
-    let load id = eventStore.GetEventsForAggregate id |> load applyOnInventoryItem
-    let save = eventStore.SaveEvents 
+type InventoryCommandHandlers (eventStore: IEventStore<Event>) =
+    let load id = eventStore.GetEventsForAggregate id |> replayWith applyOnInventoryItem
+    let save = eventStore.SaveEvents
 
-    let applyOn id version f = 
-        load id |>
+    // load aggregate, execute f on it, then save
+    let applyOn id version f =
+        load id |>                  
         f |>
         save id version
 

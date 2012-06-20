@@ -79,11 +79,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="EventStore.cs" />
     <Compile Include="FakeBus.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ReadModel.cs" />
     <Compile Include="ServiceLocator.cs" />
   </ItemGroup>
   <ItemGroup>

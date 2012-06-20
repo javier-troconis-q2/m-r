@@ -15,6 +15,8 @@ namespace CQRSGui
 
     public class MvcApplication : System.Web.HttpApplication
     {
+        public static readonly IDatabase Database = new BullShitDatabase();
+
         public static void RegisterRoutes(RouteCollection routes)
         {
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
@@ -33,22 +35,22 @@ namespace CQRSGui
 
             RegisterRoutes(RouteTable.Routes);
 
-            var bus = new FakeBus();
+            var bus = new FakeBus<object>();
 
-            var storage = new EventStore(bus);
+            var storage = new EventStore<object>(bus);
             var commands = new InventoryCommandHandlers(storage);
             bus.RegisterHandler<CheckInItemsToInventory>(commands.Handle);
             bus.RegisterHandler<CreateInventoryItem>(commands.Handle);
             bus.RegisterHandler<DeactivateInventoryItem>(commands.Handle);
             bus.RegisterHandler<RemoveItemsFromInventory>(commands.Handle);
             bus.RegisterHandler<RenameInventoryItem>(commands.Handle);
-            var detail = new InventoryItemDetailView();
+            var detail = new InventoryItemDetailView(Database);
             bus.RegisterHandler<InventoryItemCreated>(detail.Handle);
             bus.RegisterHandler<InventoryItemDeactivated>(detail.Handle);
             bus.RegisterHandler<InventoryItemRenamed>(detail.Handle);
             bus.RegisterHandler<ItemsCheckedInToInventory>(detail.Handle);
             bus.RegisterHandler<ItemsRemovedFromInventory>(detail.Handle);
-            var list = new InventoryListView();
+            var list = new InventoryListView(Database);
             bus.RegisterHandler<InventoryItemCreated>(list.Handle);
             bus.RegisterHandler<InventoryItemRenamed>(list.Handle);
             bus.RegisterHandler<InventoryItemDeactivated>(list.Handle);
