@@ -1,7 +1,9 @@
 ﻿namespace SimpleCQRS.Events
 open System
 
-type Event = obj
+type Event = 
+    interface
+    end
 
 type EventMetadata =
     {
@@ -12,6 +14,7 @@ type InventoryItemDeactivated =
     {
         Id: Guid
     }
+    interface Event
     
 
 type InventoryItemCreated =
@@ -19,21 +22,25 @@ type InventoryItemCreated =
         Id: Guid
         Name: string
     }
+    interface Event
 
 type InventoryItemRenamed =
     {
         Id: Guid
         NewName: string
     }
+    interface Event
 
 type ItemsCheckedInToInventory =
     {
         Id: Guid
         Count: int
     }
+    interface Event
 
 type ItemsRemovedFromInventory =
     {
         Id: Guid
         Count: int
     }
+    interface Event

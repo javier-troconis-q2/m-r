@@ -8,7 +8,7 @@ namespace CQRSGui.Controllers
     [HandleError]
     public class HomeController : Controller
     {
-        private FakeBus<object> _bus;
+        private FakeBus _bus;
         private IReadModelFacade _readmodel;
 
         public HomeController()

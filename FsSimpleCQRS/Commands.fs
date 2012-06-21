@@ -1,7 +1,9 @@
 ﻿namespace SimpleCQRS.Commands
 open System
 
-type Command = obj
+type Command =
+    interface
+    end
 
 type ICommandSender =
     abstract member Send : Command -> unit
@@ -11,12 +13,14 @@ type DeactivateInventoryItem =
         InventoryItemId: Guid
         OriginalVersion: int
     }
+    interface Command
 
 type CreateInventoryItem =
     {
         InventoryItemId: Guid
         Name: string
     }
+    interface Command
 
 type RenameInventoryItem =
     {
@@ -24,6 +28,7 @@ type RenameInventoryItem =
         NewName: string
         OriginalVersion: int
     }
+    interface Command
 
 type CheckInItemsToInventory =
     {
@@ -31,6 +36,7 @@ type CheckInItemsToInventory =
         Count: int
         OriginalVersion: int
     }
+    interface Command
 
 type RemoveItemsFromInventory =
     {
@@ -38,3 +44,4 @@ type RemoveItemsFromInventory =
         Count: int
         OriginalVersion: int
     }
+    interface Command

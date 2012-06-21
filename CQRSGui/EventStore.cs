@@ -6,18 +6,18 @@ using SimpleCQRS.Events;
 
 namespace CQRSGui
 {
-    public class EventStore<TEvent> : IEventStore<TEvent>
+    public class EventStore : IEventStore
     {
-        private readonly IEventPublisher<object> _publisher;
+        private readonly IEventPublisher _publisher;
 
         private struct EventDescriptor
         {
             
-            public readonly TEvent EventData;
+            public readonly Event EventData;
             public readonly Guid Id;
             public readonly int Version;
 
-            public EventDescriptor(Guid id, TEvent eventData, int version)
+            public EventDescriptor(Guid id, Event eventData, int version)
             {
                 EventData = eventData;
                 Version = version;
@@ -25,14 +25,14 @@ namespace CQRSGui
             }
         }
 
-        public EventStore(IEventPublisher<object> publisher)
+        public EventStore(IEventPublisher publisher)
         {
             _publisher = publisher;
         }
 
         private readonly Dictionary<Guid, List<EventDescriptor>> _current = new Dictionary<Guid, List<EventDescriptor>>(); 
         
-        public void SaveEvents(Guid aggregateId, int expectedVersion, IEnumerable<TEvent> events)
+        public void SaveEvents(Guid aggregateId, int expectedVersion, IEnumerable<Event> events)
         {
             List<EventDescriptor> eventDescriptors;
             if(!_current.TryGetValue(aggregateId, out eventDescriptors))
@@ -57,7 +57,7 @@ namespace CQRSGui
             }
         }
 
-        public  IEnumerable<TEvent> GetEventsForAggregate(Guid aggregateId)
+        public  IEnumerable<Event> GetEventsForAggregate(Guid aggregateId)
         {
             List<EventDescriptor> eventDescriptors;
             if (!_current.TryGetValue(aggregateId, out eventDescriptors))

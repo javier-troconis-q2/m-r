@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
+﻿using System.Web.Mvc;
 using System.Web.Routing;
 using SimpleCQRS;
 using SimpleCQRS.Commands;
@@ -35,9 +31,9 @@ namespace CQRSGui
 
             RegisterRoutes(RouteTable.Routes);
 
-            var bus = new FakeBus<object>();
+            var bus = new FakeBus();
 
-            var storage = new EventStore<object>(bus);
+            var storage = new EventStore(bus);
             var commands = new InventoryCommandHandlers(storage);
             bus.RegisterHandler<CheckInItemsToInventory>(commands.Handle);
             bus.RegisterHandler<CreateInventoryItem>(commands.Handle);

@@ -4,7 +4,7 @@ open SimpleCQRS.Events
 open InventoryItem
 
 
-type InventoryCommandHandlers (eventStore: IEventStore<Event>) =
+type InventoryCommandHandlers (eventStore: IEventStore) =
     let load id = eventStore.GetEventsForAggregate id |> replayWith applyOnInventoryItem
     let save = eventStore.SaveEvents
 
