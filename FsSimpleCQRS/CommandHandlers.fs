@@ -5,7 +5,7 @@ open InventoryItem
 
 
 type InventoryCommandHandlers (eventStore: IEventStore) =
-    let load id = eventStore.GetEventsForAggregate id |> replayWith applyOnInventoryItem
+    let load id = eventStore.GetEventsForAggregate id |> replayInventoryItem
     let save = eventStore.SaveEvents
 
     // load aggregate, execute f on it, then save

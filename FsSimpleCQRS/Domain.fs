@@ -38,6 +38,8 @@ module InventoryItem =
         | :? InventoryItemDeactivated as e -> {s with Activated = false; }
         | _ -> s
 
-    let replayWith application =
+    let replay = Seq.fold
+
+    let replayInventoryItem  events =
         let empty = { Id = Guid.Empty; Activated = false} 
-        Seq.fold application empty
+        replay applyOnInventoryItem empty events
