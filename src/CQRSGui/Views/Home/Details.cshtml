@@ -1,0 +1,13 @@
+@model SimpleCQRS.InventoryItemDetailsDto
+<html>
+    <body>
+	<h2>details</h2>
+	id: @Model.Id<br />
+	name: @Model.Name<br />
+	count: @Model.CurrentCount<br /><br />
+	@Html.ActionLink("rename","changename", new{Id=@Model.Id})<br />
+	@Html.ActionLink("deactivate","deactivate",new{Id=@Model.Id, Version=@Model.Version})<br />
+	@Html.ActionLink("check in","checkin", new{Id=@Model.Id})<br />
+	@Html.ActionLink("remove","remove", new{Id=@Model.Id,Version=@Model.Version})
+    </body>
+</html>

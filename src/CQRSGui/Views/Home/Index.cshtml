@@ -1,0 +1,15 @@
+﻿@model IEnumerable<SimpleCQRS.InventoryItemListDto>
+<html>
+    <body>
+		<h2>items</h2>
+		<ul>
+        @foreach (var x in @Model)
+		{
+			<li>
+				@Html.ActionLink(x.Name, "Details", new{Id=x.Id})
+			</li>
+		}
+		</ul>
+		@Html.ActionLink("add", "add")
+    </body>
+</html>
