@@ -3,6 +3,7 @@ namespace SimpleCQRS
 {
     public class Command : Message
     {
+
     }
 
     public class DeactivateInventoryItem : Command {

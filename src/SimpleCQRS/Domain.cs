@@ -101,11 +101,10 @@ namespace SimpleCQRS
         private void ApplyChange(Event @event, bool isNew)
         {
             Action<object> handler;
-            if (!_eventHandlerRoutes.TryGetValue(@event.GetType(), out handler))
+            if (_eventHandlerRoutes.TryGetValue(@event.GetType(), out handler))
             {
-                throw new Exception("Failed to find event handler for " + @event.GetType());
+                handler(@event);
             }
-            handler(@event);
             if(isNew) _changes.Add(@event);
         }
     }

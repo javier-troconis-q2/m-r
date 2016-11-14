@@ -1,0 +1,11 @@
+@model SimpleCQRS.InventoryItemDetailsDto
+@{
+    Layout = "_Layout";
+}
+
+@using (Html.BeginForm())
+{
+    @Html.Hidden("Version", @Model.Version)
+	<p>deactivate @Model.Name (version @Model.Version)?</p>
+	<button name="submit">submit</button>
+}
