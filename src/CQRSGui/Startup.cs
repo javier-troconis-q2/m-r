@@ -45,6 +45,7 @@ namespace CQRSGui
         public void Configure(IApplicationBuilder app, ILoggerFactory loggerFactory)
         {
             loggerFactory.AddConsole(LogLevel.Debug);
+            app.UseDeveloperExceptionPage();
             app.UseMvc(routes =>
             {
                 routes.MapRoute(
